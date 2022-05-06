@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { getApiUrl } from "../config";
+
+const API_URL = getApiUrl();
 
 class Login extends Component {
   constructor(props) {
@@ -21,7 +24,7 @@ class Login extends Component {
   registerSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/users-api/register", {
+      const res = await axios.post(`${API_URL}/users-api/register`, {
         username: this.state.name,
         email: this.state.email,
         password: this.state.password,
@@ -42,7 +45,7 @@ class Login extends Component {
   loginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/users-api/login", {
+      const res = await axios.post(`${API_URL}/users-api/login`, {
         email: this.state.email,
         password: this.state.password,
       });

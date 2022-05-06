@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { format } from "timeago.js";
+import { getApiUrl } from "../config";
+
+const API_URL = getApiUrl();
 
 class Home extends Component {
   constructor(props) {
@@ -10,14 +13,14 @@ class Home extends Component {
   }
 
   getNotes = async (token) => {
-    const res = await axios.get("/notes-api", {
+    const res = await axios.get(`${API_URL}/notes-api`, {
       headers: { Authorization: token },
     });
     this.setState({ ...this.state, notes: res.data });
   };
 
   getSharedNotesIds = async (token) => {
-    const res = await axios.get("/shared-notes-api", {
+    const res = await axios.get(`${API_URL}/shared-notes-api`, {
       headers: { Authorization: token },
     });
     this.setState({ sharedNotesIds: res.data });
@@ -27,7 +30,7 @@ class Home extends Component {
     await this.getSharedNotesIds(token);
     let temp = [];
     for (const id of this.state.sharedNotesIds) {
-      const res = await axios.get(`/notes-api/${id}`, {
+      const res = await axios.get(`${API_URL}/notes-api/${id}`, {
         headers: { Authorization: token },
       });
       if (res.data !== null) {
@@ -50,7 +53,7 @@ class Home extends Component {
   deleteNote = async (id) => {
     try {
       if (this.state.token) {
-        await axios.delete(`notes-api/${id}`, {
+        await axios.delete(`${API_URL}/notes-api/${id}`, {
           headers: { Authorization: this.state.token },
         });
         this.getNotes(this.state.token);

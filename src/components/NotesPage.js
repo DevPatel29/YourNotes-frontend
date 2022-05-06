@@ -8,6 +8,9 @@ import {
 import axios from "axios";
 import Sidebar from "./Sidebar";
 import EditNote from "./EditNote";
+import { getApiUrl } from "../config";
+
+const API_URL = getApiUrl();
 
 const unique_id = () => {
   return Date.now().toString(36);
@@ -28,7 +31,7 @@ class NotesPage extends Component {
   getNotes = async () => {
     const token = localStorage.getItem("tokenStore");
     if (token) {
-      const res = await axios.get("/notes-api", {
+      const res = await axios.get(`${API_URL}/notes-api`, {
         headers: { Authorization: token },
       });
       this.setState({ ...this.state, notes: res.data });
@@ -38,7 +41,7 @@ class NotesPage extends Component {
   getSharedNotesIds = async () => {
     const token = localStorage.getItem("tokenStore");
     if (token) {
-      const res = await axios.get("/shared-notes-api", {
+      const res = await axios.get(`${API_URL}/shared-notes-api`, {
         headers: { Authorization: token },
       });
       this.setState({ sharedNotesIds: res.data });
@@ -51,7 +54,7 @@ class NotesPage extends Component {
       const newIds = {
         notes_id: ids,
       };
-      const res = await axios.post("/notes-api/get-title", newIds, {
+      const res = await axios.post(`${API_URL}/notes-api/get-title`, newIds, {
         headers: { Authorization: token },
       });
       // return res.data;
@@ -120,7 +123,7 @@ class NotesPage extends Component {
           parentPages: parentArray,
         };
 
-        let res = await axios.post("/notes-api", newNote, {
+        let res = await axios.post(`${API_URL}/notes-api`, newNote, {
           headers: { Authorization: token },
         });
 
@@ -136,7 +139,7 @@ class NotesPage extends Component {
     let sharenote_id = temp[temp.length - 1];
     const token = localStorage.getItem("tokenStore");
     if (token) {
-      const res = await axios.get(`/notes-api/${sharenote_id}`, {
+      const res = await axios.get(`${API_URL}/notes-api/${sharenote_id}`, {
         headers: { Authorization: token },
       });
       if (res.data != null && res.data !== "Note does not exists") {
@@ -144,7 +147,7 @@ class NotesPage extends Component {
         const newShareNotes = {
           note_id: _id,
         };
-        await axios.post("/shared-notes-api/", newShareNotes, {
+        await axios.post(`${API_URL}/shared-notes-api/`, newShareNotes, {
           headers: { Authorization: token },
         });
         await this.getSharedNotes();
@@ -158,7 +161,7 @@ class NotesPage extends Component {
       const newShareNotes = {
         note_id: id,
       };
-      await axios.post("/shared-notes-api/delete", newShareNotes, {
+      await axios.post(`${API_URL}/shared-notes-api/delete`, newShareNotes, {
         headers: { Authorization: token },
       });
       await this.getSharedNotes();

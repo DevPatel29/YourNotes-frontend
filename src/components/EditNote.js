@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios";
 import autosize from "autosize";
-
 import EditBlock from "./EditBlock";
+import { getApiUrl } from "../config";
+
+const API_URL = getApiUrl();
 
 const unique_id = () => {
   return Date.now().toString(36);
@@ -33,9 +35,12 @@ class EditNote extends Component {
   getNote = async () => {
     const token = localStorage.getItem("tokenStore");
     if (this.props.match.params.id) {
-      const res = await axios.get(`/notes-api/${this.props.match.params.id}`, {
-        headers: { Authorization: token },
-      });
+      const res = await axios.get(
+        `${API_URL}/notes-api/${this.props.match.params.id}`,
+        {
+          headers: { Authorization: token },
+        }
+      );
       // console.log(res.data);
       this.setState({
         ...this.state,
@@ -54,7 +59,7 @@ class EditNote extends Component {
       const newIds = {
         notes_id: ids,
       };
-      const res = await axios.post("/notes-api/get-title", newIds, {
+      const res = await axios.post(`${API_URL}/notes-api/get-title`, newIds, {
         headers: { Authorization: token },
       });
       return res.data;
@@ -99,7 +104,7 @@ class EditNote extends Component {
           parentPages: this.state.parentPagesIds,
         };
 
-        await axios.put(`/notes-api/${this.state.id}`, newNote, {
+        await axios.put(`${API_URL}/notes-api/${this.state.id}`, newNote, {
           headers: { Authorization: token },
         });
         this.getNoteInfo();
@@ -141,7 +146,7 @@ class EditNote extends Component {
     try {
       const token = localStorage.getItem("tokenStore");
       if (token) {
-        await axios.delete(`notes-api/${id}`, {
+        await axios.delete(`${API_URL}/notes-api/${id}`, {
           headers: { Authorization: token },
         });
         this.getNoteInfo();
@@ -157,7 +162,7 @@ class EditNote extends Component {
       const token = localStorage.getItem("tokenStore");
       if (token) {
         const res = await axios.post(
-          `/notes-api/${this.state.id}/delete-childPage`,
+          `${API_URL}/notes-api/${this.state.id}/delete-childPage`,
           { childPage_id: id },
           { headers: { Authorization: token } }
         );
