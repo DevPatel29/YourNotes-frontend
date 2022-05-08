@@ -1,3 +1,3 @@
 export function getApiUrl() {
-  return "https://yournotes-backend.azurewebsites.net";
+  return "https://yournotesbackend.ddns.net";
 }
