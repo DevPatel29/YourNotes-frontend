@@ -111,12 +111,6 @@ class Home extends Component {
                 {note.name}
                 <Link to={`edit/${note._id}`}>Edit</Link>
               </div>
-              {/* <button
-                className="card-delete"
-                onClick={() => this.deleteNote(note._id)}
-              >
-                X
-              </button> */}
             </div>
           );
         })}

@@ -57,8 +57,6 @@ class NotesPage extends Component {
       const res = await axios.post(`${API_URL}/notes-api/get-title`, newIds, {
         headers: { Authorization: token },
       });
-      // return res.data;
-      // console.log(res.data);
       this.setState({ sharedNotes: res.data });
     }
   };
@@ -71,7 +69,6 @@ class NotesPage extends Component {
   async componentDidMount() {
     await this.getNotes();
     await this.getSharedNotes();
-    // console.log(this.state);
 
     if (this.props.location.pathname === "/edit") {
       if (this.state.notes.length > 0) {
